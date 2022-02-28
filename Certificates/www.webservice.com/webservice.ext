@@ -7,3 +7,5 @@ DNS.1 = www.webservice.com
 DNS.2 = webservice.com
 DNS.3 = webservice
 DNS.4 = localhost
+IP.1 = 127.0.0.1
+IP.2 = 10.0.2.2
