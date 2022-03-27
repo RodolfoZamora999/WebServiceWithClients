@@ -1,57 +1,56 @@
 package com.rodolfozamora.webservice.controller;
 
 import com.rodolfozamora.webservice.model.User;
+import com.rodolfozamora.webservice.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-    private final List<User> list = new ArrayList<>();
+    private final UserService userService;
 
-    public UserController() {
-        this.list.add(new User(1L, "fake@email.com", "Lynda", "Lagunes"));
-        this.list.add(new User(2L, "fake@email.com", "Andrea", "Gimenez"));
-        this.list.add(new User(3L, "fake@email.com", "John", "Hollwings"));
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok(this.list);
+        return ResponseEntity.ok(this.userService.getAllUsers());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
-        var user = this.list.stream().filter(us -> us.getId().
-                equals(id)).findFirst().orElseThrow();
-
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(this.userService.getUserById(id));
     }
 
     @PostMapping
     public ResponseEntity<User> postUser(@RequestBody User user) {
-        list.add(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        if (this.userService.saveUser(user))
+            return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        else
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(user);
     }
 
     @PutMapping
     public ResponseEntity<User> updateUser(@RequestBody User user) {
-        this.list.replaceAll(usr-> {
-            if (usr.getId().equals(user.getId()))
-                return user;
-            return usr;
-        });
-        return ResponseEntity.ok(user);
+        if (this.userService.updateUser(user))
+            return ResponseEntity.ok(user);
+        else
+            return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
-        this.list.removeIf(user -> user.getId().equals(id));
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        if (this.userService.deleteUser(id))
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        else
+            return ResponseEntity.notFound().build();
     }
 
 }
