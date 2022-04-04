@@ -8,10 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -27,17 +24,17 @@ public class JwtAuthController {
         this.manager = manager;
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<Map<String, String>> login(@RequestBody AuthUser user) {
         try {
-            var userPassword = new UsernamePasswordAuthenticationToken(user.getName(), user.getPassword());
+            var userPassword = new UsernamePasswordAuthenticationToken(user.getId(), user.getPassword());
             var authentication = manager.authenticate(userPassword);
 
             var userName = authentication.getName();
             var roles = authentication.getAuthorities().stream().
                     map(GrantedAuthority::getAuthority).toList();
 
-            var tokenResponse = Map.of("token",
+            var tokenResponse = Map.of("type", "bearer", "token",
                     jwtService.createToken(userName, roles.toArray(new String[0])));
 
             return ResponseEntity.ok(tokenResponse);

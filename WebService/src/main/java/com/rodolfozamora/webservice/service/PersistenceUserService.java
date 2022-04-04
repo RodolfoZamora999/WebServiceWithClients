@@ -1,5 +1,6 @@
 package com.rodolfozamora.webservice.service;
 
+import com.rodolfozamora.webservice.data.RoleRepository;
 import com.rodolfozamora.webservice.data.UserRepository;
 import com.rodolfozamora.webservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +10,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MemoryUserService implements UserService {
-    private final UserRepository repository;
+public class PersistenceUserService implements UserService {
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MemoryUserService(UserRepository repository, PasswordEncoder passwordEncoder) {
-        this.repository = repository;
+    public PersistenceUserService(UserRepository userRepository, RoleRepository roleRepository,
+                                  PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -23,37 +28,44 @@ public class MemoryUserService implements UserService {
     public boolean saveUser(User user) {
         //Encode password
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-        return this.repository.saveUser(user);
+
+        if (user.getRole() == null)
+            roleRepository.findByName("USER").ifPresent(user::setRole);
+
+        this.userRepository.save(user);
+        return true;
     }
 
     @Override
     public List<User> getAllUsers() {
-        return this.repository.getAllUsers();
+        return this.userRepository.findAll();
     }
 
     @Override
     public User getUserById(Long id) {
-        return this.repository.getUserById(id);
+        return this.userRepository.findById(id).orElseThrow();
     }
 
     @Override
     public User getUserByUserName(String userName) {
-        return this.repository.getUserByUserName(userName);
+        return null;
     }
 
     @Override
     public User getUserByEmail(String email) {
-        return this.repository.getUserByEmail(email);
+        return this.userRepository.findByEmail(email).orElseThrow();
     }
 
     @Override
     public boolean deleteUser(Long id) {
-        return this.repository.deleteUser(id);
+        this.userRepository.deleteById(id);
+        return true;
     }
 
     @Override
     public boolean updateUser(User user) {
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-        return this.repository.updateUser(user);
+        this.userRepository.save(user);
+        return true;
     }
 }

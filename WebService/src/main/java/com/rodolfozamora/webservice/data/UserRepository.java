@@ -1,22 +1,10 @@
 package com.rodolfozamora.webservice.data;
 
 import com.rodolfozamora.webservice.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository {
-
-    boolean saveUser(User user);
-
-    List<User> getAllUsers();
-
-    User getUserById(Long id);
-
-    User getUserByUserName(String userName);
-
-    User getUserByEmail(String email);
-
-    boolean deleteUser(Long id);
-
-    boolean updateUser(User user);
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
 }

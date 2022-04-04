@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class MyWebSecurity extends WebSecurityConfigurerAdapter {
     private final JwtService jwtService;
 
@@ -32,7 +32,7 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/login", "/api/user").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/login", "/api/user", "/api/image").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
