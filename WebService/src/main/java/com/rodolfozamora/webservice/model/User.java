@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "user_tb")
@@ -26,8 +25,4 @@ public class User {
     @JoinColumn(name = "id_role", referencedColumnName = "id")
     @JsonIgnore
     private Role role;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Contact> contacts;
 }
