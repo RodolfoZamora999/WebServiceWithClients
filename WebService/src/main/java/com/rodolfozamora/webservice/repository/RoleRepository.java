@@ -1,4 +1,4 @@
-package com.rodolfozamora.webservice.data;
+package com.rodolfozamora.webservice.repository;
 
 import com.rodolfozamora.webservice.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

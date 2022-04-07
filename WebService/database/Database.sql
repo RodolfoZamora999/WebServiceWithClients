@@ -1,6 +1,5 @@
 # Mariadb database
-DROP DATABASE IF EXISTS webservice_db;
-CREATE DATABASE webservice_db;
+CREATE DATABASE IF NOT EXISTS webservice_db;
 USE webservice_db;
 
 CREATE TABLE IF NOT EXISTS role_tb

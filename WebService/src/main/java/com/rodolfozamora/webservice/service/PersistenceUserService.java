@@ -1,7 +1,7 @@
 package com.rodolfozamora.webservice.service;
 
-import com.rodolfozamora.webservice.data.RoleRepository;
-import com.rodolfozamora.webservice.data.UserRepository;
+import com.rodolfozamora.webservice.repository.RoleRepository;
+import com.rodolfozamora.webservice.repository.UserRepository;
 import com.rodolfozamora.webservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

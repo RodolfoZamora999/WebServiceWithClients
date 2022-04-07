@@ -1,6 +1,6 @@
 package com.rodolfozamora.webservice;
 
-import com.rodolfozamora.webservice.data.RoleRepository;
+import com.rodolfozamora.webservice.repository.RoleRepository;
 import com.rodolfozamora.webservice.model.Role;
 import com.rodolfozamora.webservice.model.User;
 import com.rodolfozamora.webservice.service.UserService;

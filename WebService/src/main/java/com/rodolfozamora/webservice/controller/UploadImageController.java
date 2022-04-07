@@ -20,7 +20,7 @@ public class UploadImageController {
         this.uploadImageService = uploadImageService;
     }
 
-    @PostMapping(consumes = {"image/jpg", "image/png"}, produces = "application/json")
+    @PostMapping(consumes = {"image/jpeg", "image/png"}, produces = "application/json")
     public ResponseEntity<Object> postImage(InputStream in) {
         var id = uploadImageService.saveImage(in);
         if (id == null)

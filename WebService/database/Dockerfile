@@ -1,7 +1,5 @@
 FROM mariadb:10.7.3
 
-RUN mkdir database
-
-WORKDIR /database
+WORKDIR /docker-entrypoint-initdb.d
 
 COPY Database.sql .
