@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS contact_tb
     phone_number VARCHAR(30),
     email VARCHAR(255),
     image_profile TEXT,
-    id_user INT UNSIGNED,
-    FOREIGN KEY (id_user) REFERENCES user_tb(id)
+    id_user INT UNSIGNED NOT NULL,
+    FOREIGN KEY (id_user) REFERENCES user_tb(id) ON DELETE CASCADE
 
 );
 
