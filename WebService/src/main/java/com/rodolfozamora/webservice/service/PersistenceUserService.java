@@ -26,15 +26,12 @@ public class PersistenceUserService implements UserService {
     }
 
     @Override
-    public boolean saveUser(User user) {
+    public void saveUser(User user) {
         //Encode password
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-
         if (user.getRole() == null)
             roleRepository.findByName("USER").ifPresent(user::setRole);
-
         this.userRepository.save(user);
-        return true;
     }
 
     @Override
@@ -58,15 +55,13 @@ public class PersistenceUserService implements UserService {
     }
 
     @Override
-    public boolean deleteUser(Long id) {
+    public void deleteUser(Long id) {
         this.userRepository.deleteById(id);
-        return true;
     }
 
     @Override
-    public boolean updateUser(User user) {
+    public void updateUser(User user) {
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
         this.userRepository.save(user);
-        return true;
     }
 }

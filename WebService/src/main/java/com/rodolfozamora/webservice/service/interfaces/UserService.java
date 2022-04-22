@@ -5,7 +5,7 @@ import com.rodolfozamora.webservice.model.User;
 import java.util.List;
 
 public interface UserService {
-    boolean saveUser(User user);
+    void saveUser(User user);
 
     List<User> getAllUsers();
 
@@ -15,7 +15,7 @@ public interface UserService {
 
     User getUserByEmail(String email);
 
-    boolean deleteUser(Long id);
+    void deleteUser(Long id);
 
-    boolean updateUser(User user);
+    void updateUser(User user);
 }
