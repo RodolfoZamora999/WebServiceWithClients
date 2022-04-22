@@ -1,7 +1,11 @@
 package com.rodolfozamora.webservice.controller;
 
 import com.rodolfozamora.webservice.model.Contact;
+import com.rodolfozamora.webservice.service.interfaces.ContactService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,33 +13,38 @@ import java.util.List;
 @RestController
 @RequestMapping("api/{user}/contact")
 public class ContactController {
+    private final ContactService contactService;
 
-    public ContactController() {
-
+    @Autowired
+    public ContactController(ContactService contactService) {
+        this.contactService = contactService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Contact>> getContacts(@PathVariable("user") Long id) {
-        return ResponseEntity.ok(null);
+    @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Contact>> getContacts(@PathVariable("user") Long userId) {
+        return ResponseEntity.ok(this.contactService.getAllContacts(userId));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Contact> getContact(@PathVariable("user") Long idUser, @PathVariable("id") Long id) {
-        return ResponseEntity.ok(null);
+    @GetMapping(value = "/{id}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Contact> getContact(@PathVariable("user") Long userId, @PathVariable("id") Long contactId) {
+        return ResponseEntity.ok(this.contactService.getContactById(userId, contactId));
     }
 
-    @PostMapping
-    public ResponseEntity<Contact> postContact(@PathVariable("user") Long idUser, @RequestBody Contact contact) {
-        return ResponseEntity.ok(null);
+    @PostMapping(consumes = MimeTypeUtils.APPLICATION_JSON_VALUE, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Contact> postContact(@PathVariable("user") Long userId, @RequestBody Contact contact) {
+        this.contactService.saveContact(userId, contact);
+        return ResponseEntity.ok(contact);
     }
 
-    @PutMapping
-    public ResponseEntity<Contact> updateContact(@PathVariable("user") Long idUser, @RequestBody Contact contact) {
-        return ResponseEntity.ok(null);
+    @PutMapping(consumes = MimeTypeUtils.APPLICATION_JSON_VALUE, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Contact> updateContact(@PathVariable("user") Long userId, @RequestBody Contact contact) {
+        this.contactService.updateContact(userId, contact);
+        return ResponseEntity.ok(contact);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteContact(@PathVariable("user") Long idUser, @PathVariable("id") Long id) {
-        return ResponseEntity.ok(null);
+    @DeleteMapping(value = "/{id}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> deleteContact(@PathVariable("user") Long userId, @PathVariable("id") Long contactId) {
+        this.contactService.deleteContact(userId, contactId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

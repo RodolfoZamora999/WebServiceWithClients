@@ -1,6 +1,6 @@
 package com.rodolfozamora.webservice.controller;
 
-import com.rodolfozamora.webservice.service.UploadImageService;
+import com.rodolfozamora.webservice.service.interfaces.UploadImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;

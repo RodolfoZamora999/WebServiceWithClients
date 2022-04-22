@@ -1,5 +1,6 @@
 package com.rodolfozamora.webservice.service;
 
+import com.rodolfozamora.webservice.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +20,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var userRepo = userService.getUserByEmail(username);
 
-        return User.withUsername(userRepo.getName()).
+        return User.withUsername(userRepo.getId().toString()).
                 password(userRepo.getPassword()).roles(userRepo.getRole().getName()).build();
     }
 }

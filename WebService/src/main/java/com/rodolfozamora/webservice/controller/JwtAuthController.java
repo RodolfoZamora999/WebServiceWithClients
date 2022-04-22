@@ -1,7 +1,7 @@
 package com.rodolfozamora.webservice.controller;
 
 import com.rodolfozamora.webservice.model.AuthUser;
-import com.rodolfozamora.webservice.service.JwtService;
+import com.rodolfozamora.webservice.service.interfaces.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

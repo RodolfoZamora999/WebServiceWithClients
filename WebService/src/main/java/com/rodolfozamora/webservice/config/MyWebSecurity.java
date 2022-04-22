@@ -1,7 +1,7 @@
 package com.rodolfozamora.webservice.config;
 
 import com.rodolfozamora.webservice.filter.JwtAuthenticationFilter;
-import com.rodolfozamora.webservice.service.JwtService;
+import com.rodolfozamora.webservice.service.interfaces.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

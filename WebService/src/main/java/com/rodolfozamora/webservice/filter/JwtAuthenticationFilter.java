@@ -1,6 +1,6 @@
 package com.rodolfozamora.webservice.filter;
 
-import com.rodolfozamora.webservice.service.JwtService;
+import com.rodolfozamora.webservice.service.interfaces.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;

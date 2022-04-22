@@ -3,7 +3,7 @@ package com.rodolfozamora.webservice;
 import com.rodolfozamora.webservice.repository.RoleRepository;
 import com.rodolfozamora.webservice.model.Role;
 import com.rodolfozamora.webservice.model.User;
-import com.rodolfozamora.webservice.service.UserService;
+import com.rodolfozamora.webservice.service.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

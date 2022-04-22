@@ -1,4 +1,4 @@
-package com.rodolfozamora.webservice.service;
+package com.rodolfozamora.webservice.service.interfaces;
 
 import org.springframework.security.core.GrantedAuthority;
 

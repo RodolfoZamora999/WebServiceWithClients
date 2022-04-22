@@ -1,7 +1,7 @@
 package com.rodolfozamora.webservice.controller;
 
 import com.rodolfozamora.webservice.model.User;
-import com.rodolfozamora.webservice.service.UserService;
+import com.rodolfozamora.webservice.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
