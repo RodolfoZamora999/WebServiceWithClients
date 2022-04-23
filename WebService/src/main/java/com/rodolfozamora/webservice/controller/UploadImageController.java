@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/image")
+@RequestMapping("/api/images")
 public class UploadImageController {
     private final UploadImageService uploadImageService;
 

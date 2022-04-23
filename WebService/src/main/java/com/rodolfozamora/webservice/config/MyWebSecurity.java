@@ -32,7 +32,7 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/login", "/api/user", "/api/image").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/login", "/api/users", "/api/images").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
