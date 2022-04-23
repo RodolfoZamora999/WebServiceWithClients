@@ -31,7 +31,38 @@ Cuenta con algunas implementaciones de clientes para la API, como lo es un clien
 
 ### Puntos finales
 
-- api/user [GET, POST, PUT, DELETE]
-- api/user/{id-user}/contact [GET, POST,PUT, DELETE]
-- api/image [GET, POST]
+- api/users [GET, POST, PUT, DELETE]
+
+```json
+{
+  "name":"Fulanito",
+  "lastName":"De tal",
+  "email":"myemailo@email.com",
+  "password":"1234",
+  "imageProfile":"api/images/IMG_05042022105"
+}
+```
+
+- api/users/{id-user}/contacts [GET, POST,PUT, DELETE]
+
+```json
+{
+  "name":"Fulanito",
+  "lastName":"De tal",
+  "phoneNumber":"0123456789",
+  "email":"some@email.com",
+  "imageProfile":"api/images/IMG_05042022105"
+}
+```
+
+- api/images [GET, POST]
+
+
 - api/login [POST]
+
+```json
+{
+  "id":"myemail@email.com",
+  "password":"my-password"
+}
+```
