@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".iu.contact.RegisterContactFragment">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/primary_background"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnCancelContactRegister"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_cancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnSaveContactRegister"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/ic_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/imgProfileContactRegister"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="#0288D1"
+                android:src="@drawable/ic_person"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/btnImageProfileContactRegister"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/ic_photo"
+                app:layout_constraintBottom_toBottomOf="@+id/imgProfileContactRegister"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <EditText
+                android:id="@+id/editNameContactRegister"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+                android:ems="10"
+                android:hint="@string/name"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgProfileContactRegister" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_person"
+                app:layout_constraintBottom_toBottomOf="@+id/editNameContactRegister"
+                app:layout_constraintEnd_toStartOf="@+id/editNameContactRegister"
+                app:layout_constraintTop_toTopOf="@+id/editNameContactRegister"
+                app:tint="#505050" />
+
+            <EditText
+                android:id="@+id/editLastNameContactRegister"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="@string/last_name"
+                app:layout_constraintEnd_toEndOf="@+id/editNameContactRegister"
+                app:layout_constraintStart_toStartOf="@+id/editNameContactRegister"
+                app:layout_constraintTop_toBottomOf="@+id/editNameContactRegister" />
+
+            <EditText
+                android:id="@+id/editPhoneNumberContactRegister"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+                android:hint="@string/phone_number"
+                android:inputType="phone"
+                app:layout_constraintEnd_toEndOf="@+id/editLastNameContactRegister"
+                app:layout_constraintStart_toStartOf="@+id/editLastNameContactRegister"
+                app:layout_constraintTop_toBottomOf="@+id/editLastNameContactRegister" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_phone"
+                app:layout_constraintBottom_toBottomOf="@+id/editPhoneNumberContactRegister"
+                app:layout_constraintEnd_toStartOf="@+id/editPhoneNumberContactRegister"
+                app:layout_constraintTop_toTopOf="@+id/editPhoneNumberContactRegister"
+                app:tint="#505050" />
+
+            <EditText
+                android:id="@+id/editEmailContactRegister"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+                android:hint="@string/email_address"
+                android:inputType="textEmailAddress"
+                app:layout_constraintEnd_toEndOf="@+id/editPhoneNumberContactRegister"
+                app:layout_constraintStart_toStartOf="@+id/editPhoneNumberContactRegister"
+                app:layout_constraintTop_toBottomOf="@+id/editPhoneNumberContactRegister" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_email"
+                app:layout_constraintBottom_toBottomOf="@+id/editEmailContactRegister"
+                app:layout_constraintEnd_toStartOf="@+id/editEmailContactRegister"
+                app:layout_constraintTop_toTopOf="@+id/editEmailContactRegister"
+                app:tint="#505050" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

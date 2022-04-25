@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--Interface colors-->
+    <color name="button_confirm">#0277BD</color>
+    <color name="button_cancel">#C62828</color>
+    <color name="primary_background">#2B5F9A</color>
+    <color name="second_background">#3D8FE1</color>
+
 </resources>

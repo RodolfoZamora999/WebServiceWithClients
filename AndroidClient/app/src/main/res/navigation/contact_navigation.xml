@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contact_navigation"
+    app:startDestination="@id/listContactFragment">
+
+    <fragment
+        android:id="@+id/listContactFragment"
+        android:name="com.rodolfozamora.iu.contact.ListContactFragment"
+        android:label="fragment_list_contact"
+        tools:layout="@layout/fragment_list_contact" >
+        <action
+            android:id="@+id/action_listContactFragment_to_registerContactFragment"
+            app:destination="@id/registerContactFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_in_down" />
+        <action
+            android:id="@+id/action_listContactFragment_to_contactFragment"
+            app:destination="@id/contactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerContactFragment"
+        android:name="com.rodolfozamora.iu.contact.RegisterContactFragment"
+        android:label="fragment_register_contact"
+        tools:layout="@layout/fragment_register_contact" />
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.rodolfozamora.iu.contact.ContactFragment"
+        android:label="fragment_contact"
+        tools:layout="@layout/fragment_contact" />
+</navigation>

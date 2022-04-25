@@ -6,9 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import com.google.gson.Gson
 import com.rodolfozamora.R
 import com.rodolfozamora.data.model.User
@@ -26,15 +24,14 @@ class RegisterFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        val btnDiscard = activity?.findViewById<Button>(R.id.btnCancelRegister)
-        val btnRegister = activity?.findViewById<Button>(R.id.btnRegisterRegister)
+        val btnDiscard = requireActivity().findViewById<TextView>(R.id.txtCancelRegisterUser)
+        val btnRegister = requireActivity().findViewById<Button>(R.id.btnRegisterUser)
 
-        btnDiscard?.setOnClickListener {
-            Toast.makeText(context, "Cancel...", Toast.LENGTH_LONG).show()
+        btnDiscard.setOnClickListener {
             activity?.onBackPressed()
         }
 
-        btnRegister?.setOnClickListener {
+        btnRegister.setOnClickListener {
             val editName = activity?.findViewById<EditText>(R.id.editNameRegister)
             val editLastName = activity?.findViewById<EditText>(R.id.editLastNameRegister)
             val editEmail = activity?.findViewById<EditText>(R.id.editEmailRegister)
