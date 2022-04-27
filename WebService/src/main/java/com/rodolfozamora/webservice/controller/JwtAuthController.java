@@ -35,7 +35,7 @@ public class JwtAuthController {
                     map(GrantedAuthority::getAuthority).toList();
 
             var tokenResponse = Map.of("type", "bearer", "token",
-                    jwtService.createToken(userName, roles.toArray(new String[0])));
+                    jwtService.createToken(userName, roles.toArray(new String[0])), "user", userName);
 
             return ResponseEntity.ok(tokenResponse);
 

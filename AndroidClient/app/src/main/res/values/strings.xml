@@ -24,4 +24,7 @@
     <string name="password">Password</string>
     <string name="register_a_new_account">Register a new account</string>
     <string name="cancel_register">Cancel register</string>
+    <string name="ip_address">10.0.2.2</string>
+    <string name="dns_address">www.webservice.com</string>
+    <string name="server_address">Server Address</string>
 </resources>

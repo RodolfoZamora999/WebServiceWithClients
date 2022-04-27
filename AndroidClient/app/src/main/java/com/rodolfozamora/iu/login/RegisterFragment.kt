@@ -1,20 +1,18 @@
 package com.rodolfozamora.iu.login
 
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.google.gson.Gson
 import com.rodolfozamora.R
 import com.rodolfozamora.data.model.User
-import com.rodolfozamora.network.createOkHttpSecureBuilder
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
-import java.lang.Exception
+import com.rodolfozamora.network.api.RestApiUtils
+import com.rodolfozamora.network.api.Response
+import com.rodolfozamora.persistence.NAME_SHARED_PREFERENCES
+import com.rodolfozamora.persistence.SERVER_ADDRESS
 
 class RegisterFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -32,15 +30,15 @@ class RegisterFragment : Fragment() {
         }
 
         btnRegister.setOnClickListener {
-            val editName = activity?.findViewById<EditText>(R.id.editNameRegister)
-            val editLastName = activity?.findViewById<EditText>(R.id.editLastNameRegister)
-            val editEmail = activity?.findViewById<EditText>(R.id.editEmailRegister)
-            val editPassword = activity?.findViewById<EditText>(R.id.editPasswordRegister)
+            val editName = requireActivity().findViewById<EditText>(R.id.editNameRegister)
+            val editLastName = requireActivity().findViewById<EditText>(R.id.editLastNameRegister)
+            val editEmail = requireActivity().findViewById<EditText>(R.id.editEmailRegister)
+            val editPassword = requireActivity().findViewById<EditText>(R.id.editPasswordRegister)
 
-            val name = editName?.text.toString()
-            val lastName = editLastName?.text.toString()
-            val email = editEmail?.text.toString()
-            val password = editPassword?.text.toString()
+            val name = editName.text.toString()
+            val lastName = editLastName.text.toString()
+            val email = editEmail.text.toString()
+            val password = editPassword.text.toString()
             val imageProfile = null
 
             val user = User(name, lastName, email,
@@ -51,29 +49,23 @@ class RegisterFragment : Fragment() {
     }
 
     private fun registerUser(user: User) {
-        val baseUrl = "https://10.0.2.2:8443"
-        val apiUrl = "/api/users"
-        val finalUrl = baseUrl.plus(apiUrl)
-        val dataJson = Gson().toJson(user)
+        val preferences = requireActivity().getSharedPreferences(NAME_SHARED_PREFERENCES, MODE_PRIVATE)
+        val serverAddress = preferences.getString(SERVER_ADDRESS, "10.0.2.2")
 
-        val httpClient = createOkHttpSecureBuilder(requireActivity().baseContext).build()
-        val jsonMimeType = "application/json; charset=utf-8".toMediaTypeOrNull()
-        val body = dataJson.toRequestBody(jsonMimeType)
-        val request = Request.Builder().url(finalUrl).post(body).build()
-
-        Thread {
-            try {
-                val response = httpClient.newCall(request).execute()
-                val statusCode = response.code
-                if (statusCode in 200..210) {
-                    Log.d("RESPONSE", "Response: " + response.body?.string())
+        val restApi = RestApiUtils(requireContext(), "https://$serverAddress:8443", null)
+        restApi.registerUser(user, object : RestApiUtils.ResponseCallback<User> {
+            override fun result(response: Response<User>) {
+                if (response.isResponseSuccessful()) {
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireContext(), "Successful registration", Toast.LENGTH_LONG).show()
+                        requireActivity().onBackPressed()
+                    }
                 }
-                else {
-                    Log.d("RESPONSE", "Fail: " + response.body?.string())
-                }
-            } catch (ex: Exception) {
-                ex.printStackTrace()
+                else
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_LONG).show()
+                    }
             }
-        }.start()
+        })
     }
 }

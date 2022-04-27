@@ -30,7 +30,7 @@ class ContactFragment : Fragment() {
         val txtNameContact = requireActivity().findViewById<TextView>(R.id.txtNameContact)
         val txtNumberContact = requireActivity().findViewById<TextView>(R.id.txtPhoneNumberContact)
         val txtEmailContact = requireActivity().findViewById<TextView>(R.id.txtEmailContact).apply {
-            if (contact.email.isNotEmpty()) {
+            if (!contact.email.isNullOrEmpty()) {
                 this.visibility = View.VISIBLE
                 this.text = contact.email
             }
@@ -39,7 +39,7 @@ class ContactFragment : Fragment() {
         txtNameContact.text = contact.name.plus(" ").plus(contact.lastName)
         txtNumberContact.text = contact.phoneNumber
         txtEmailContact.text = contact.email
-        if (contact.imageProfile.isEmpty()) {
+        if (contact.imageProfile.isNullOrEmpty()) {
             imgProfile.setBackgroundColor(Color.parseColor("#1976D2"))
             imgProfile.setImageResource(R.drawable.ic_person)
         }
@@ -55,7 +55,7 @@ class ContactFragment : Fragment() {
         }
 
         val btnEmail = requireActivity().findViewById<ImageButton>(R.id.btnEmailContact).apply {
-            if (contact.email.isNotEmpty()) {
+            if (!contact.email.isNullOrEmpty()) {
                 this.visibility = View.VISIBLE
                 this.isClickable = true
             }
@@ -63,8 +63,6 @@ class ContactFragment : Fragment() {
         btnEmail.setOnClickListener {
                 val intent = Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:${contact.email}")
-                //putExtra(Intent.EXTRA_EMAIL, contact.email)
-                //putExtra(Intent.EXTRA_SUBJECT, subject)
             }
             if (intent.resolveActivity(requireActivity().packageManager) != null) {
                 startActivity(intent)

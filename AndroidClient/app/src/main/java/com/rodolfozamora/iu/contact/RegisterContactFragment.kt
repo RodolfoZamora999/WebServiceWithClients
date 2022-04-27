@@ -1,18 +1,29 @@
 package com.rodolfozamora.iu.contact
 
 import android.app.Activity.RESULT_OK
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import com.rodolfozamora.R
+import com.rodolfozamora.data.model.Contact
+import com.rodolfozamora.network.api.Response
+import com.rodolfozamora.network.api.RestApiUtils
+import com.rodolfozamora.persistence.CURRENT_USER
+import com.rodolfozamora.persistence.JWT_TOKEN
+import com.rodolfozamora.persistence.NAME_SHARED_PREFERENCES
+import com.rodolfozamora.persistence.SERVER_ADDRESS
 
 class RegisterContactFragment : Fragment() {
+    var imageProfileUri: Uri? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -22,16 +33,28 @@ class RegisterContactFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        requireActivity().findViewById<ImageButton>(R.id.btnCancelContactRegister).apply {
-            this.setOnClickListener {
-                requireActivity().onBackPressed()
-            }
+        val btnCancel = requireActivity().findViewById<ImageButton>(R.id.btnCancelContactRegister)
+        btnCancel.setOnClickListener {
+            requireActivity().onBackPressed()
         }
 
-        requireActivity().findViewById<ImageButton>(R.id.btnSaveContactRegister).apply {
-            this.setOnClickListener {
-                Toast.makeText(context, "Saved...", Toast.LENGTH_LONG).show()
-            }
+        val btnRegister = requireActivity().findViewById<ImageButton>(R.id.btnSaveContactRegister)
+        btnRegister.setOnClickListener {
+            val activity = requireActivity()
+            val txtName = activity.findViewById<EditText>(R.id.editNameContactRegister)
+            val txtLastName = activity.findViewById<EditText>(R.id.editLastNameContactRegister)
+            val txtNumber = activity.findViewById<EditText>(R.id.editPhoneNumberContactRegister)
+            val txtEmail = activity.findViewById<EditText>(R.id.editEmailContactRegister)
+
+            val name = txtName.text.toString()
+            val lastName = txtLastName.text.toString()
+            val phoneNumber = txtNumber.text.toString()
+            val email: String? = if (txtEmail.text.isEmpty()) null else txtEmail.text.toString()
+
+            val contact = Contact(null, name, lastName,
+                phoneNumber, email, null)
+
+            registerContact(contact)
         }
 
         val btnImage = requireActivity().findViewById<ImageButton>(R.id.btnImageProfileContactRegister)
@@ -45,18 +68,38 @@ class RegisterContactFragment : Fragment() {
         }
     }
 
-    private fun registerContact() {
+    private fun registerContact(contact: Contact) {
+        val preferences = requireActivity().getSharedPreferences(NAME_SHARED_PREFERENCES, MODE_PRIVATE)
+        val serverAddress = preferences.getString(SERVER_ADDRESS, "10.0.2.2")
+        val userId = preferences.getString(CURRENT_USER, "-1")
+        val jwtToken = preferences.getString(JWT_TOKEN, "null")
+        val restApi = RestApiUtils(requireContext(), "https://$serverAddress:8443", jwtToken)
 
+        //Upload image
+
+        //Register contact
+        restApi.registerContact(userId!!.toInt(), contact, object : RestApiUtils.ResponseCallback<Contact> {
+            override fun result(response: Response<Contact>) {
+                if (response.isResponseSuccessful()) {
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireContext(), "Successful registration", Toast.LENGTH_LONG).show()
+                        requireActivity().onBackPressed()
+                    }
+                }
+                else
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_LONG).show()
+                    }
+            }
+        })
     }
 
-
-    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
-                val uri = data?.data
+                imageProfileUri = data?.data
                 requireActivity().findViewById<ImageView>(R.id.imgProfileContactRegister).apply {
-                    setImageURI(uri)
+                    setImageURI(imageProfileUri)
                     scaleType = ImageView.ScaleType.CENTER_CROP
                 }
             }
