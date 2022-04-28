@@ -17,10 +17,7 @@ import com.rodolfozamora.R
 import com.rodolfozamora.data.model.Contact
 import com.rodolfozamora.network.api.Response
 import com.rodolfozamora.network.api.RestApiUtils
-import com.rodolfozamora.persistence.CURRENT_USER
-import com.rodolfozamora.persistence.JWT_TOKEN
-import com.rodolfozamora.persistence.NAME_SHARED_PREFERENCES
-import com.rodolfozamora.persistence.SERVER_ADDRESS
+import com.rodolfozamora.persistence.*
 
 class RegisterContactFragment : Fragment() {
     var imageProfileUri: Uri? = null
@@ -40,58 +37,40 @@ class RegisterContactFragment : Fragment() {
 
         val btnRegister = requireActivity().findViewById<ImageButton>(R.id.btnSaveContactRegister)
         btnRegister.setOnClickListener {
-            val activity = requireActivity()
-            val txtName = activity.findViewById<EditText>(R.id.editNameContactRegister)
-            val txtLastName = activity.findViewById<EditText>(R.id.editLastNameContactRegister)
-            val txtNumber = activity.findViewById<EditText>(R.id.editPhoneNumberContactRegister)
-            val txtEmail = activity.findViewById<EditText>(R.id.editEmailContactRegister)
-
-            val name = txtName.text.toString()
-            val lastName = txtLastName.text.toString()
-            val phoneNumber = txtNumber.text.toString()
-            val email: String? = if (txtEmail.text.isEmpty()) null else txtEmail.text.toString()
-
-            val contact = Contact(null, name, lastName,
-                phoneNumber, email, null)
-
-            registerContact(contact)
+            registerContact(loadContactDataFromIU())
         }
 
         val btnImage = requireActivity().findViewById<ImageButton>(R.id.btnImageProfileContactRegister)
         btnImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-                type = "image/*"
-            }
-            if (intent.resolveActivity(requireActivity().packageManager) != null) {
-                startActivityForResult(intent, 1)
-            }
+            chooseImage()
         }
     }
 
-    private fun registerContact(contact: Contact) {
-        val preferences = requireActivity().getSharedPreferences(NAME_SHARED_PREFERENCES, MODE_PRIVATE)
-        val serverAddress = preferences.getString(SERVER_ADDRESS, "10.0.2.2")
-        val userId = preferences.getString(CURRENT_USER, "-1")
-        val jwtToken = preferences.getString(JWT_TOKEN, "null")
-        val restApi = RestApiUtils(requireContext(), "https://$serverAddress:8443", jwtToken)
+    private fun loadContactDataFromIU(): Contact {
+        val activity = requireActivity()
+        val txtName = activity.findViewById<EditText>(R.id.editNameContactRegister)
+        val txtLastName = activity.findViewById<EditText>(R.id.editLastNameContactRegister)
+        val txtNumber = activity.findViewById<EditText>(R.id.editPhoneNumberContactRegister)
+        val txtEmail = activity.findViewById<EditText>(R.id.editEmailContactRegister)
 
-        //Upload image
+        val name = txtName.text.toString()
+        val lastName = txtLastName.text.toString()
+        val phoneNumber = txtNumber.text.toString()
+        val email: String? = if (txtEmail.text.isEmpty()) null else txtEmail.text.toString()
 
-        //Register contact
-        restApi.registerContact(userId!!.toInt(), contact, object : RestApiUtils.ResponseCallback<Contact> {
-            override fun result(response: Response<Contact>) {
-                if (response.isResponseSuccessful()) {
-                    requireActivity().runOnUiThread {
-                        Toast.makeText(requireContext(), "Successful registration", Toast.LENGTH_LONG).show()
-                        requireActivity().onBackPressed()
-                    }
-                }
-                else
-                    requireActivity().runOnUiThread {
-                        Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_LONG).show()
-                    }
-            }
-        })
+        return Contact(null, name, lastName, phoneNumber, email, null)
+    }
+
+
+    private fun chooseImage() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "*/*"
+            addCategory(Intent.CATEGORY_OPENABLE)
+            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/png", "image/jpeg"))
+        }
+
+        if (intent.resolveActivity(requireActivity().packageManager) != null)
+            startActivityForResult(intent, 1)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -101,8 +80,55 @@ class RegisterContactFragment : Fragment() {
                 requireActivity().findViewById<ImageView>(R.id.imgProfileContactRegister).apply {
                     setImageURI(imageProfileUri)
                     scaleType = ImageView.ScaleType.CENTER_CROP
+
+                    uploadImage(imageProfileUri!!)
                 }
             }
         }
+    }
+
+    private fun uploadImage(uri: Uri) {
+        val file = createFileFromAndroidUri(uri, requireContext())
+
+        val preferences = requireActivity().getSharedPreferences(NAME_SHARED_PREFERENCES, MODE_PRIVATE)
+        val serverAddress = preferences.getString(SERVER_ADDRESS, "10.0.2.2")
+
+        val restApi = RestApiUtils(requireContext(), "https://$serverAddress:8443", null)
+        restApi.uploadImage(file, object : RestApiUtils.ResponseCallback<String> {
+            override fun result(response: Response<String>) {
+                if (response.isResponseSuccessful()) {
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireContext(),"Image uploaded: ${response.data}", Toast.LENGTH_LONG).show()
+                    }
+                } else
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireContext(),"Something went wrong!", Toast.LENGTH_LONG).show() }
+            }
+        })
+    }
+
+    private fun registerContact(contact: Contact) {
+        val preferences = requireActivity().getSharedPreferences(NAME_SHARED_PREFERENCES, MODE_PRIVATE)
+        val serverAddress = preferences.getString(SERVER_ADDRESS, "10.0.2.2")
+        val userId = preferences.getString(CURRENT_USER, "-1")
+        val jwtToken = preferences.getString(JWT_TOKEN, "null")
+
+        val restApi = RestApiUtils(requireContext(), "https://$serverAddress:8443", jwtToken)
+
+        //Upload image
+
+        //Register contact
+        restApi.registerContact(userId!!.toInt(), contact, object : RestApiUtils.ResponseCallback<Contact> {
+            override fun result(response: Response<Contact>) {
+                if (response.isResponseSuccessful()) {
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireContext(),"Successful registration", Toast.LENGTH_LONG).show()
+                        requireActivity().onBackPressed()
+                    }
+                } else
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireContext(),"Something went wrong!", Toast.LENGTH_LONG).show() }
+            }
+        })
     }
 }

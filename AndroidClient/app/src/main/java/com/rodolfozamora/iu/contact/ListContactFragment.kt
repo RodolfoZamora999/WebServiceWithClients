@@ -57,7 +57,6 @@ class ListContactFragment : Fragment() {
     }
 
     private fun loadAllContacts() {
-        //Load all contacts
         val preferences = requireActivity().getSharedPreferences(NAME_SHARED_PREFERENCES, MODE_PRIVATE)
         val serverAddress = preferences.getString(SERVER_ADDRESS, "10.0.2.2")
         val userId = preferences.getString(CURRENT_USER, "-1")
