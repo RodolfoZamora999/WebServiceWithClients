@@ -21,19 +21,23 @@ public class UploadImageController {
     }
 
     @PostMapping(consumes = {"image/jpeg", "image/png"}, produces = "application/json")
-    public ResponseEntity<Object> postImage(InputStream in) {
-        var id = uploadImageService.saveImage(in);
+    public ResponseEntity<Object> postImage(InputStream in, @RequestHeader("Content-Type") String mediaType) {
+        String extension = mediaType.split("/")[1];
+        var id = uploadImageService.saveImage(in, extension);
         if (id == null)
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Error to create the image"));
         else
-            return ResponseEntity.ok(Map.of("path", "api/image/%s".formatted(id)));
+            return ResponseEntity.ok(Map.of("path", "api/images/%s".formatted(id)));
     }
 
-    @GetMapping(value = "/{id}", produces = {"image/jpg", "image/png", "application/json"})
+    @GetMapping(value = "/{id}", produces = {"image/jpeg", "image/png", "application/json"})
     public ResponseEntity<Resource> getImage(@PathVariable String id) {
         var resource = this.uploadImageService.getImage(id);
-        if (resource != null)
-            return ResponseEntity.ok(resource);
+        if (resource != null) {
+            var type = resource.getFilename().split("\\.")[1];
+            var mimeType =  type.equals("png") ? "image/png" : "image/jpeg";
+            return ResponseEntity.ok().header("Content-Type", mimeType).body(resource);
+        }
         else
             return ResponseEntity.badRequest().build();
     }

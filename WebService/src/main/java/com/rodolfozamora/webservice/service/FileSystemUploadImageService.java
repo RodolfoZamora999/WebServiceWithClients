@@ -27,18 +27,17 @@ public class FileSystemUploadImageService implements UploadImageService {
 
     @PostConstruct
     private void postConstructor() {
-        LOG.info("Image folder: " + rootPath.toString());
+        LOG.info("Image folder created on: " + rootPath.toString());
     }
 
     @Override
-    public String saveImage(InputStream in) {
+    public String saveImage(InputStream in, String type) {
         try {
             if (!Files.exists(this.rootPath)) {
                 Files.createDirectory(this.rootPath);
             }
-
-            var name = "IMG_%s_%s.jpg".formatted(System.currentTimeMillis(),
-                    this.random.nextInt(0, 99999));
+            var name = "IMG_%s_%s.%s".formatted(System.currentTimeMillis(),
+                    this.random.nextInt(0, 99999), type);
             var path = this.rootPath.resolve(name);
             Files.copy(in, path);
             return name;
