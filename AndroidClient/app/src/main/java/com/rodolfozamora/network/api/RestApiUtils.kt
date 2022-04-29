@@ -1,6 +1,9 @@
 package com.rodolfozamora.network.api
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.rodolfozamora.data.model.AuthUser
@@ -119,6 +122,36 @@ class RestApiUtils(context: Context, private val baseUrl: String, private val jw
                     val jsonObject = JsonParser.parseString(bodyResponse).asJsonObject
                     val relativeImagePath = jsonObject.get("path").asString
                     resp = Response(RESPONSE_STATUS_SUCCESS, relativeImagePath, "Successful response")
+                    callBack.result(resp)
+                }
+                else {
+                    resp = Response(RESPONSE_STATUS_FAIL, null, response.body!!.string())
+                    callBack.result(resp)
+                }
+            }
+        })
+    }
+
+    fun downloadImage(relativePath: String, callBack: ResponseCallback<Bitmap>) {
+        val url = this.baseUrl.plus("/$relativePath")
+        val request = Request.Builder().url(url).get().
+                        addHeader("Authorization", "Bearer $jwtToken").build()
+
+
+        Log.d("IMAGE_DOWN", url)
+
+        var resp: Response<Bitmap>
+        this.httpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                resp = Response(RESPONSE_STATUS_FAIL, null, e.message)
+                callBack.result(resp)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                if (response.code in 200..210) {
+                    Log.d("IMAGE_DOWN", "SUCCESSFUL RESPONSE")
+                    val bitmap = BitmapFactory.decodeStream(response.body!!.byteStream())
+                    resp = Response(RESPONSE_STATUS_SUCCESS, bitmap, "Successful response")
                     callBack.result(resp)
                 }
                 else {
