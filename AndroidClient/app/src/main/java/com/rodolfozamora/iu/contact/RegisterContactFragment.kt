@@ -37,7 +37,16 @@ class RegisterContactFragment : Fragment() {
 
         val btnRegister = requireActivity().findViewById<ImageButton>(R.id.btnSaveContactRegister)
         btnRegister.setOnClickListener {
-            registerContact(loadContactDataFromIU())
+            val contact = loadContactDataFromIU()
+            if (imageProfileUri != null) {
+                //upload contact with a image
+                 val uri = imageProfileUri
+                registerContactWithImage(uri!!, contact)
+            }
+            else {
+                //upload contact without a image
+                registerContact(contact)
+            }
         }
 
         val btnImage = requireActivity().findViewById<ImageButton>(R.id.btnImageProfileContactRegister)
@@ -80,26 +89,24 @@ class RegisterContactFragment : Fragment() {
                 requireActivity().findViewById<ImageView>(R.id.imgProfileContactRegister).apply {
                     setImageURI(imageProfileUri)
                     scaleType = ImageView.ScaleType.CENTER_CROP
-
-                    uploadImage(imageProfileUri!!)
                 }
             }
         }
     }
 
-    private fun uploadImage(uri: Uri) {
+    private fun registerContactWithImage(uri: Uri, contact: Contact) {
         val file = createFileFromAndroidUri(uri, requireContext())
 
         val preferences = requireActivity().getSharedPreferences(NAME_SHARED_PREFERENCES, MODE_PRIVATE)
         val serverAddress = preferences.getString(SERVER_ADDRESS, "10.0.2.2")
 
+        //Upload image before
         val restApi = RestApiUtils(requireContext(), "https://$serverAddress:8443", null)
         restApi.uploadImage(file, object : RestApiUtils.ResponseCallback<String> {
             override fun result(response: Response<String>) {
                 if (response.isResponseSuccessful()) {
-                    requireActivity().runOnUiThread {
-                        Toast.makeText(requireContext(),"Image uploaded: ${response.data}", Toast.LENGTH_LONG).show()
-                    }
+                    contact.imageProfile = response.data!!
+                    registerContact(contact)
                 } else
                     requireActivity().runOnUiThread {
                         Toast.makeText(requireContext(),"Something went wrong!", Toast.LENGTH_LONG).show() }
@@ -113,11 +120,8 @@ class RegisterContactFragment : Fragment() {
         val userId = preferences.getString(CURRENT_USER, "-1")
         val jwtToken = preferences.getString(JWT_TOKEN, "null")
 
-        val restApi = RestApiUtils(requireContext(), "https://$serverAddress:8443", jwtToken)
-
-        //Upload image
-
         //Register contact
+        val restApi = RestApiUtils(requireContext(), "https://$serverAddress:8443", jwtToken)
         restApi.registerContact(userId!!.toInt(), contact, object : RestApiUtils.ResponseCallback<Contact> {
             override fun result(response: Response<Contact>) {
                 if (response.isResponseSuccessful()) {

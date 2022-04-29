@@ -2,6 +2,7 @@ package com.rodolfozamora.network.api
 
 import android.content.Context
 import com.google.gson.Gson
+import com.google.gson.JsonParser
 import com.rodolfozamora.data.model.AuthUser
 import com.rodolfozamora.data.model.Contact
 import com.rodolfozamora.data.model.User
@@ -114,7 +115,10 @@ class RestApiUtils(context: Context, private val baseUrl: String, private val jw
 
             override fun onResponse(call: Call, response: okhttp3.Response) {
                 if (response.code in 200..210) {
-                    resp = Response(RESPONSE_STATUS_SUCCESS, response.body!!.string(), "Successful response")
+                    val bodyResponse = response.body!!.string()
+                    val jsonObject = JsonParser.parseString(bodyResponse).asJsonObject
+                    val relativeImagePath = jsonObject.get("path").asString
+                    resp = Response(RESPONSE_STATUS_SUCCESS, relativeImagePath, "Successful response")
                     callBack.result(resp)
                 }
                 else {
