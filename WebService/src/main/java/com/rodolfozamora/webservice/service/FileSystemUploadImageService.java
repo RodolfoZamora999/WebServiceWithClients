@@ -10,6 +10,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -22,8 +25,14 @@ public class FileSystemUploadImageService implements UploadImageService {
     private final Logger LOG = LoggerFactory.getLogger(FileSystemUploadImageService.class);
     private final Random random = new Random();
 
-    @Value("${images-folder.root-path: ${user.dir}/images}")
+    //@Value("${images.folder.root-path: ${user.dir}/images}")
+    @Value("${images.folder.root-path: user.dir/images}")
     private Path rootPath;
+
+    @Value("${images.size.height: 500}")
+    private int imageWidth;
+    @Value("${images.size.width: 500}")
+    private int imageHeight;
 
     @PostConstruct
     private void postConstructor() {
@@ -39,7 +48,12 @@ public class FileSystemUploadImageService implements UploadImageService {
             var name = "IMG_%s_%s.%s".formatted(System.currentTimeMillis(),
                     this.random.nextInt(0, 99999), type);
             var path = this.rootPath.resolve(name);
-            Files.copy(in, path);
+
+            //Resize image to 600x600 px
+            var buffOriginal = ImageIO.read(in);
+            var buffResize= resizeImage(buffOriginal, imageWidth, imageHeight);
+            ImageIO.write(buffResize, type, path.toFile());
+
             return name;
         } catch (IOException ioException) {
             LOG.info(ioException.getMessage());
@@ -54,5 +68,12 @@ public class FileSystemUploadImageService implements UploadImageService {
             return new FileSystemResource(filePath);
         else
             return null;
+    }
+
+    private BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
+        var resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_DEFAULT);
+        var outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+        outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
+        return outputImage;
     }
 }
