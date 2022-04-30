@@ -31,8 +31,35 @@ Cuenta con algunas implementaciones de clientes para la API, como lo es un clien
 
 ### Puntos finales
 
-- api/users [GET, POST, PUT, DELETE]
+**api/users [GET, POST, PUT, DELETE]**
 
+**api/users GET**
+
+```response```
+```json
+[
+  {
+    "name":"Fulanito",
+    "lastName":"De tal",
+    "email":"myemailo@email.com",
+    "password":"1234",
+    "imageProfile":"api/images/IMG_05042022105"
+  },
+  {
+    "name":"Fulanito",
+    "lastName":"De tal",
+    "email":"myemailo@email.com",
+    "password":"1234",
+    "imageProfile":"api/images/IMG_05042022105"
+  }
+]
+```
+
+<br>
+
+**api/users POST**
+
+```consume```
 ```json
 {
   "name":"Fulanito",
@@ -43,8 +70,87 @@ Cuenta con algunas implementaciones de clientes para la API, como lo es un clien
 }
 ```
 
-- api/users/{id-user}/contacts [GET, POST,PUT, DELETE]
+```response```
+```json
+{
+  "name":"Fulanito",
+  "lastName":"De tal",
+  "email":"myemailo@email.com",
+  "password":"1234",
+  "imageProfile":"api/images/IMG_05042022105"
+}
+```
 
+<br>
+
+**api/users PUT**
+
+```consume```
+```json
+{
+  "name":"Fulanito",
+  "lastName":"De tal",
+  "email":"myemailo@email.com",
+  "password":"1234",
+  "imageProfile":"api/images/IMG_05042022105"
+}
+```
+
+```response```
+```json
+{
+  "name":"Fulanito",
+  "lastName":"De tal",
+  "email":"myemailo@email.com",
+  "password":"1234",
+  "imageProfile":"api/images/IMG_05042022105"
+}
+```
+
+<br>
+
+**api/users/{id-user} DELETE**
+
+```consume```
+
+nothing
+
+```response```
+
+nothing
+
+<br>
+<br>
+
+**api/users/{id-user}/contacts [GET, POST, PUT, DELETE]**
+
+**api/users/{id-user}/contacts GET**
+
+```response```
+```json
+[
+  {
+    "name":"Fulanito",
+    "lastName":"De tal",
+    "phoneNumber":"0123456789",
+    "email":"fulanito@email.com",
+    "imageProfile":"api/images/IMG_05042022105"
+  },
+  {
+    "name":"Manganito",
+    "lastName":"SinApellido",
+    "phoneNumber":"9874632014",
+    "email":"manganito@email.com",
+    "imageProfile":"api/images/IMG_04042122106"
+  }
+]
+```
+
+<br>
+
+**api/users/{id-user}/contacts/{id-contact} GET**
+
+```response```
 ```json
 {
   "name":"Fulanito",
@@ -54,6 +160,73 @@ Cuenta con algunas implementaciones de clientes para la API, como lo es un clien
   "imageProfile":"api/images/IMG_05042022105"
 }
 ```
+
+<br>
+
+**api/users/{id-user}/contacts POST**
+
+```consume```
+```json
+{
+  "name":"Fulanito",
+  "lastName":"De tal",
+  "phoneNumber":"0123456789",
+  "email":"some@email.com",
+  "imageProfile":"api/images/IMG_05042022105"
+}
+```
+
+```response```
+```json
+{
+  "name":"Fulanito",
+  "lastName":"De tal",
+  "phoneNumber":"0123456789",
+  "email":"some@email.com",
+  "imageProfile":"api/images/IMG_05042022105"
+}
+```
+
+<br>
+
+**api/users/{id-user}/contacts PUT**
+
+```consume```
+```json
+{
+  "name":"Fulanito",
+  "lastName":"De tal",
+  "phoneNumber":"0123456789",
+  "email":"some@email.com",
+  "imageProfile":"api/images/IMG_05042022105"
+}
+```
+
+```response```
+```json
+{
+  "name":"Fulanito",
+  "lastName":"De tal",
+  "phoneNumber":"0123456789",
+  "email":"some@email.com",
+  "imageProfile":"api/images/IMG_05042022105"
+}
+```
+
+<br>
+
+**api/users/{id-user}/contacts/{id-contact} DELETE**
+
+```consume```
+
+nothing
+
+```response```
+
+nothing
+
+<br>
+<br>
 
 - api/images [GET, POST]
 
