@@ -1,4 +1,4 @@
-# Servicio web con clientes
+# Implementación de un servicio Rest en Spring Framework con algunos clientes.
 
 <br>
 
