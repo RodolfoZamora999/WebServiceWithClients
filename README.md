@@ -4,7 +4,16 @@
 
 Implementación de un servicio Rest sencillo en SpringFramework desplegado en contenedores Docker.
 
-Cuenta con algunas implementaciones de clientes para la API, como lo es un cliente en Android y un cliente gráfico de escritorio desarrollado en JavaFX.
+El objetivo principal de este proyecto es poner en práctica varios de los conocimientos que he ido adquiriendo durante los últimos meses, desde trabajar con Spring framework, Spring Security, Spring Data, pasando además por TLS con certificados autofirmados, utilización de tokens JWT para la autentificación sin estado, habilitación de HTTP/2 como protocolo principal  y hasta llegar con el despliegue de contenedores utilizando docker.  
+
+Ahora bien, hablando sobre la dinámica del sistema, tenemos un pequeño servicio web que nos permite almacenar contactos de usuario y recuperarlos en cualquier momento, todo a través de una interfaz Rest API. 
+
+Actualmente el proyecto cuenta solamente con una implementación “completa” de un cliente para este servicio Rest, el cual es una aplicación móvil desarrollada nativamente para la plataforma Android. El objetivo es desarrollar al menos otro cliente el cual consistiría en una implementación de escritorio utilizando JavaFX para el desarrollo de esta, por el momento quedará pendiente en un futuro no muy lejano. 
+
+
+<br>
+
+ ![System diagram](/documentation/diagram.png)
 
 <br>
 
