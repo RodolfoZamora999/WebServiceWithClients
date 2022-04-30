@@ -253,3 +253,25 @@ nothing
 <br>
 
 ### api/images [GET, POST]
+
+**api/images/{id-image}**
+
+```response```
+
+image/jpeg, image/png
+
+<br>
+
+**api/images POST**
+
+```consume```
+
+image/jpeg, image/png
+
+```response```
+```json
+{
+  "path": "api/images/IMG_1651300445323_17534.jpeg"
+}
+```
+
