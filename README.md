@@ -15,6 +15,8 @@ Actualmente el proyecto cuenta solamente con una implementación “completa” 
 
  ![System diagram](/documentation/diagram.png)
 
+> Diagrama que muestra una vista completa del sistema interactuando con algunos clientes.
+
 <br>
 
 ## Características del proyecto:
@@ -36,6 +38,32 @@ Actualmente el proyecto cuenta solamente con una implementación “completa” 
 - Docker
 - Acceso a internet
 
+<br>
+
+## Instrucciones para el despliegue del proyecto
+
+Dentro de la carpeta del proyecto “WebService” se encuentra un script de bash ```desploy-docker.sh``` que viene con lo necesario para desplegar completamente el sistema, desde la compilación y empaquetado del proyecto hasta el despliegue de los contenedores que contiene el servicio web y la base de datos.
+
+Lo único que se tiene que hacer es ejecutar los siguientes comandos sobre el script ```desploy-docker.sh``` en orden en un entorno bash: 
+
+- Despliegue del contenedor de la base de datos MariaDB
+
+```bash
+./desploy-docker.sh database
+```
+
+- Despliegue del contenedor del servicio web
+
+```bash
+./desploy-docker.sh webservice
+```
+
+> Nota 1: Posiblemente sea necesario cambiar las propiedades del script para poder ejecutarlo, para esto tiene que hacer lo siguiente: chmod +x desploy-docker.sh
+
+> Nota 2: Posiblemente también sea necesario cambiar los permisos del socket generado por docker para poder trabajar directamente con un usuario que no sea root, para eso tiene que hacer lo siguiente : sudo chmod 777 /var/run/docker.sock
+
+
+<br>
 <br>
 
 ## Puntos finales
