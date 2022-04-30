@@ -8,7 +8,7 @@ Cuenta con algunas implementaciones de clientes para la API, como lo es un clien
 
 <br>
 
-### Características del proyecto:
+## Características del proyecto:
 
 - Java 17
 - Spring Framework (Spring Boot, Spring Security, Spring JPA)
@@ -21,7 +21,7 @@ Cuenta con algunas implementaciones de clientes para la API, como lo es un clien
 
 <br>
 
-### Requisitos para el despliegue:
+## Requisitos para el despliegue:
 - Java 17
 - Maven
 - Docker
@@ -29,9 +29,9 @@ Cuenta con algunas implementaciones de clientes para la API, como lo es un clien
 
 <br>
 
-### Puntos finales
+## Puntos finales
 
-**api/users [GET, POST, PUT, DELETE]**
+### api/users [GET, POST, PUT, DELETE]
 
 **api/users GET**
 
@@ -122,7 +122,7 @@ nothing
 <br>
 <br>
 
-**api/users/{id-user}/contacts [GET, POST, PUT, DELETE]**
+### api/users/{id-user}/contacts [GET, POST, PUT, DELETE]
 
 **api/users/{id-user}/contacts GET**
 
@@ -228,14 +228,28 @@ nothing
 <br>
 <br>
 
-- api/images [GET, POST]
+### api/login [POST]
 
+**api/login POST**
 
-- api/login [POST]
-
+```consume```
 ```json
 {
-  "id":"myemail@email.com",
-  "password":"my-password"
+  "id":"fulanito@email.com",
+  "password":"1234"
 }
 ```
+
+```response```
+```json
+{
+  "user": "1",
+  "type": "bearer",
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY1MTkwNDUyM30.sZTGwYnITRNgvn9cNKRSdF3oc-S2N4bsNrf6pTuoCBM"
+}
+```
+
+<br>
+<br>
+
+### api/images [GET, POST]
