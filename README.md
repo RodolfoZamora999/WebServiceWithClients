@@ -315,3 +315,22 @@ image/jpeg, image/png
 <br>
 <br>
 
+## Implementación de cliente Android
+
+Implementación de un cliente sencillo desarrollado nativamente para la plataforma Android, la aplicación ha sido desarrollada utilizando kotlin como lenguaje de programación y un nivel de API 23 (Android 6.0) como versión mínima. 
+
+El objetivo de la implementación de este cliente es solamente demostrativo, teniendo como objetivo principal mostrar el funcionamiento correcto del sistema Rest Api implementado.
+
+La aplicación no maneja ningún tipo de persistencia local, esto quiere decir que toda la información mostrada junto con las imagenes son cargadas a través de la red utilizando el servicio Rest y permaneciendo en memoria durante el tiempo de ejecución, debido a esto, la aplicación puede presentar algunos retardos al momento de guardar o cargar información de los contactos.   
+
+<br>
+
+ ![System diagram](documentation/register.png)
+
+> Pantalla de inicio de sesión de la aplicación (1.a), pantalla donde se puede registrar una nueva cuenta (1.b) y registro de nuevos contactos (1.c). 
+
+ <br>
+
+  ![System diagram](documentation/contacts.png)
+
+  > Pantalla que lista todos los contactos registrados en la cuenta del usuario (2.a), pantalla que nos muestra más detalles acerca del contacto y acciones que se pueden realizar (2.b), la última pantalla nos muestra el resultado de haber presionado el botón para marcar (2.c). 
