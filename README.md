@@ -13,7 +13,7 @@ Actualmente el proyecto cuenta solamente con una implementación “completa” 
 
 <br>
 
- ![System diagram](/documentation/diagram.png)
+ ![System diagram](documentation/diagram.svg)
 
 <br>
 
@@ -283,4 +283,7 @@ image/jpeg, image/png
   "path": "api/images/IMG_1651300445323_17534.jpeg"
 }
 ```
+
+<br>
+<br>
 
